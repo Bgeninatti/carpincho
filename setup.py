@@ -26,6 +26,7 @@ setuptools.setup(
         'discord.py',
         'click',
         'peewee',
+        'psycopg2',
     ],
     python_requires='>=3.7',
     entry_points={

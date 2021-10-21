@@ -2,10 +2,12 @@ import json
 import datetime
 from enum import Enum
 
-from peewee import (CharField, DateTimeField, BooleanField, Model,
-                    SqliteDatabase, PrimaryKeyField, IntegerField)
+from peewee import (CharField, DateTimeField, Model, PrimaryKeyField, IntegerField, PostgresqlDatabase, TextField)
 
-database = SqliteDatabase(None)
+from carpincho.config import load_config
+
+cfg = load_config()
+database = PostgresqlDatabase(**cfg['DB'])
 
 
 class BaseModel(Model):
@@ -40,7 +42,7 @@ class Attendee(BaseModel):
     discord_user = CharField(null=True)
     email = CharField()
     ticket = CharField()
-    meta = CharField()
+    meta = TextField()
     status = CharField(default=RegistrationStatus.PENDING.name)
     created = DateTimeField(default=datetime.datetime.now)
     updated = DateTimeField(default=datetime.datetime.now)
@@ -60,8 +62,8 @@ class Attendee(BaseModel):
         return cls(**kwargs)
 
 
-def init_db(db_path):
-    database.init(db_path)
+def init_db():
+    database.init(cfg['DB']['database'])
     database.connect()
     database.create_tables([Attendee])
     return database

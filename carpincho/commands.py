@@ -10,12 +10,11 @@ from carpincho.db.queries import get_next_attendee_id
 @click.command()
 @click.pass_context
 def update_attendees(ctx):
-    db_path = ctx.obj["DEFAULT"]["db_path"]
-    fetch_limit = int(ctx.obj["DEFAULT"]["fetch_limit"])
+    fetch_limit = int(ctx.obj["EVENTOL"]["fetch_limit"])
     username = ctx.obj["EVENTOL"]["username"]
     passwrod = ctx.obj["EVENTOL"]["password"]
 
-    init_db(db_path)
+    init_db()
     latest_id = get_next_attendee_id()
     client = EventolClient(username, passwrod)
     fetcher = AttendeeProvider(client)
@@ -28,8 +27,7 @@ def update_attendees(ctx):
 @click.command()
 @click.pass_context
 def run_bot(ctx):
-    db_path = ctx.obj["DEFAULT"]["db_path"]
     token = ctx.obj["DISCORD"]["token"]
 
-    init_db(db_path)
+    init_db()
     bot.run(token)
