@@ -8,7 +8,9 @@ from discord.ext import commands
 from carpincho.config import load_config
 from carpincho.db.models import RegistrationStatus, Attendee
 from carpincho.db.queries import find_attendee, get_status
+from carpincho.logger import get_logger
 
+log = get_logger(__name__)
 config = load_config()
 
 CHANNEL = config["DISCORD"]["channel"]
@@ -32,6 +34,7 @@ def register_attendee(word: str, msg) -> Tuple[RegistrationStatus, Optional[Atte
         attendee.discord_user = msg.author
         attendee.updated = datetime.now()
         attendee.save()
+        log.info("Registering attendee: discord_user=%s attende_id=%d", attendee.discord_user, attendee.attendee_id)
         return RegistrationStatus.OK, attendee
     else:
         raise ValueError("IDK what happened. But looks bad.")

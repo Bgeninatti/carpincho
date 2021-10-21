@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup
 
 from carpincho.db.models import Attendee
+from carpincho.logger import get_logger
+
+log = get_logger(__name__)
 
 
 class AttendeeProvider:
@@ -15,14 +18,16 @@ class AttendeeProvider:
             try:
                 yield self.fetch_one(attendee_id + i)
             except ValueError:
+                log.error("Attendee not found: attendee_id=%d", attendee_id)
                 continue
 
     def fetch_one(self, attendee_id):
-        print(f"Fetching attendee: attendee_id={attendee_id}")
+        log.info("Fetching attendee: attendee_id=%d", attendee_id)
         url = self._url.format(attendee_id=attendee_id)
         response = self._client.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
         if not self.is_pyconar_2021(soup):
+            log.warning("Attendee is not PyConAr 2021: attendee_id=%d", attendee_id)
             return
         return Attendee.from_html(soup, attendee_id=attendee_id)
 
