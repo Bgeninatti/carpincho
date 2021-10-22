@@ -1,6 +1,6 @@
 import click
 
-from carpincho.commands import update_attendees, run_bot
+from carpincho.commands import update_attendees, run_bot, run_monitor
 from carpincho.config import load_config
 
 
@@ -14,3 +14,4 @@ def main(ctx):
 
 main.add_command(update_attendees)
 main.add_command(run_bot)
+main.add_command(run_monitor)

@@ -35,3 +35,13 @@ def run_bot(ctx):
 
     init_db()
     bot.run(token)
+
+
+@click.command()
+@click.pass_context
+def run_monitor(ctx):
+    token = ctx.obj["DISCORD"]["token"]
+    log.info("Starting Discord monitor")
+
+    client = ActivityMonitor()
+    client.run(token)
