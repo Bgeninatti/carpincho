@@ -1,2 +1,2 @@
 worker: carpincho run-bot
-worker: carpincho run-monitor
+monitor: carpincho run-monitor
