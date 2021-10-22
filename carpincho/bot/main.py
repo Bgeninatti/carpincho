@@ -96,7 +96,9 @@ async def registro(ctx, word: str):
         msg = f"Usuario {ctx.message.author.mention} registrado! :)"
         await ctx.author.add_roles(role)
         # Send final response
-        await ctx.send(msg)
+        message = await ctx.send(msg)
+        await asyncio.sleep(5)
+        await discord.Message.delete(message)
 
     # Remove command after parsing it
     await discord.Message.delete(ctx.message)
