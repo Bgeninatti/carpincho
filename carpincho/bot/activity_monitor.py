@@ -17,7 +17,7 @@ class ActivityMonitor(discord.Client):
         words = self.tokenize_message(message.content)
         counter = Counter(words.split(' '))
         log.info("Message", extra={'channel': message.channel.id,
-                                   'author': message.author.name,
+                                   'author': f"\"{message.author.name}\"",
                                    'words': json.dumps(counter)})
 
     async def on_raw_reaction_add(self, payload):
@@ -25,7 +25,7 @@ class ActivityMonitor(discord.Client):
             log.info("Reaction",
                      extra={'channel': payload.channel_id,
                             'dmessage': payload.message_id,
-                            'user': payload.member.name,
+                            'user': f"\"{payload.member.name}\"",
                             'emoji': payload.emoji})
 
     @staticmethod
