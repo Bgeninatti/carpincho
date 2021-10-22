@@ -3,6 +3,7 @@ import click
 from carpincho.attendees.api.attendees import AttendeeProvider
 from carpincho.attendees.api.client import EventolClient
 from carpincho.bot.main import bot
+from carpincho.bot.activity_monitor import ActivityMonitor
 from carpincho.db.models import init_db, Attendee
 from carpincho.db.queries import get_next_attendee_id
 from carpincho.logger import get_logger
