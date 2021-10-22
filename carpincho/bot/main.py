@@ -34,7 +34,10 @@ def register_attendee(word: str, msg) -> Tuple[RegistrationStatus, Optional[Atte
         attendee.discord_user = msg.author
         attendee.updated = datetime.now()
         attendee.save()
-        log.info("Registering attendee: discord_user=%s attende_id=%d", attendee.discord_user, attendee.attendee_id)
+        log.info(
+            "Registering attendee",
+            extra={'attendee_id': attendee.attendee_id, 'discord_user': attendee.discord_user}
+        )
         return RegistrationStatus.OK, attendee
     else:
         raise ValueError("IDK what happened. But looks bad.")

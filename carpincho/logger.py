@@ -2,15 +2,33 @@ import logging
 import sys
 
 
-def get_logger(name):
+class ContextLogger(logging.Logger):
 
-    logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    def _log(self, level, msg, args, exc_info=None, extra=None):
+        msg = f"{msg}: "
+        if extra:
+            msg = f"{msg} {' '.join((f'{k}={v}' for k, v in extra.items()))}"
+        super()._log(level, msg, args, exc_info, extra)
 
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
+
+def get_logger(name, lvl=logging.INFO, filename=None, verbose=False):
+
     formatter = logging.Formatter(
-        '%(asctime)s|%(threadName)s|%(levelname)s|%(message)s')
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+        '%(asctime)s [%(levelname)s] %(threadName)s:%(funcName)s %(message)s')
+
+    logging.setLoggerClass(ContextLogger)
+    logger = logging.getLogger(name)
+
+    if filename:
+        handler = logging.FileHandler(filename)
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+
+    if verbose or not filename:
+        stream_handler = logging.StreamHandler(sys.stdout)
+        stream_handler.setFormatter(formatter)
+        logger.addHandler(stream_handler)
+
+    logger.setLevel(lvl)
+
     return logger

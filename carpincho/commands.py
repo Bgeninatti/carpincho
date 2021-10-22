@@ -21,9 +21,9 @@ def update_attendees(ctx):
     client = EventolClient(username, passwrod)
     fetcher = AttendeeProvider(client)
 
-    log.info("Fetching attendees since: latest_id=%d limit=%d", latest_id, fetch_limit)
+    log.info("Fetching attendees since", extra={'latest_id': latest_id, 'limit': fetch_limit})
     new_attendees = list(fetcher.fetch_since(latest_id, fetch_limit))
-    log.info("Saving new attendees: attendees_count=%d", len(new_attendees))
+    log.info("Saving new attendees", extra={'attendees_count': len(new_attendees)})
     Attendee.bulk_create(new_attendees)
 
 
@@ -31,7 +31,7 @@ def update_attendees(ctx):
 @click.pass_context
 def run_bot(ctx):
     token = ctx.obj["DISCORD"]["token"]
-    log.info("Starting Discrod bot")
+    log.info("Starting Discord bot")
 
     init_db()
     bot.run(token)
