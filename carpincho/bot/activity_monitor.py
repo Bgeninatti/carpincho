@@ -4,10 +4,8 @@ import string
 from collections import Counter
 
 import discord
-from config import load_config
-from logger import get_logger
+from carpincho.logger import get_logger
 
-config = load_config()
 log = get_logger(__name__)
 
 
